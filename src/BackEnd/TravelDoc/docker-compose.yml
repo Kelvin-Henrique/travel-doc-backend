@@ -1,0 +1,6 @@
+services:
+  traveldoc.api:
+    image: ${DOCKER_REGISTRY-}traveldocapi
+    build:
+      context: .
+      dockerfile: TravelDoc.Api/Dockerfile

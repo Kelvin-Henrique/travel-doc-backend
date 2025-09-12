@@ -1,10 +1,15 @@
 ﻿using TravelDoc.Api.Domain.Usuarios.Entities;
+using TravelDoc.Infrastructure.Core.Domain;
 using TravelDoc.Infrastructure.Core.Results;
 
 namespace TravelDoc.Application.Usuarios.Domain
 {
-    public class Usuario
+    public class Usuario : Entity
     {
+        protected Usuario()
+        { 
+        }
+
         private Usuario(int id, string cpf, string nome, string email, string telefone, TipoUsuarioEnum tipo, bool autenticacaoDoisFatores)
         {
             Id = id;
@@ -16,7 +21,6 @@ namespace TravelDoc.Application.Usuarios.Domain
             AutenticacaoDoisFatores = autenticacaoDoisFatores;
         }
 
-        public int Id { get; private set; }
         public string Cpf { get; }
         public string Nome { get; private set; }
         public string Email { get; private set; }

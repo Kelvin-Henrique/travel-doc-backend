@@ -1,15 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 using TravelDoc.Application.Usuarios.Domain;
+using TravelDoc.Api.Domain.Planos.Entities;
 using Hashcoop.Repository.Extensions;
 
-namespace TravelDoc.Repository.Usuarios.Mappings
+namespace TravelDoc.Api.Infrastructure.Persistence.Repositories.Planos
 {
-    internal class UsuarioTbMap : IEntityTypeConfiguration<Usuario>
+    internal class PlanoTbMap : IEntityTypeConfiguration<Plano>
     {
-        private string NOME_TABELA = $"{nameof(Usuario)}Tb".ToSnakeCase();
+        private string NOME_TABELA = $"{nameof(Plano)}Tb".ToSnakeCase();
 
-        public void Configure(EntityTypeBuilder<Usuario> builder)
+        public void Configure(EntityTypeBuilder<Plano> builder)
         {
             builder.ToTable(NOME_TABELA);
 
@@ -19,27 +20,23 @@ namespace TravelDoc.Repository.Usuarios.Mappings
             builder.Property(p => p.Id)
                 .UseIdentityColumn();
 
-            builder.Property(i => i.Cpf)
-                .IsRequired()
-                .HasMaxLength(11);
-            
             builder.Property(i => i.Nome)
                 .IsRequired()
                 .HasMaxLength(500);
 
-            builder.Property(i => i.Email)
-                .HasMaxLength(200)
+            builder.Property(i => i.Descricao)
+                .HasMaxLength(500)
                 .IsRequired();
 
-            builder.Property(i => i.Tipo)
+            builder.Property(i => i.Valor)
                 .IsRequired();
 
-            builder.Property(i => i.Telefone)
+            builder.Property(i => i.Icone)
                 .IsRequired()
-                .HasMaxLength(14);
+                .HasMaxLength(200);
 
-            builder.Property(i => i.AutenticacaoDoisFatores)
-                .HasDefaultValue(false)
+            builder.Property(i => i.Ativo)
+                .HasDefaultValue(true)
                 .IsRequired();
 
             builder.Property<DateTime>("DataInclusao")

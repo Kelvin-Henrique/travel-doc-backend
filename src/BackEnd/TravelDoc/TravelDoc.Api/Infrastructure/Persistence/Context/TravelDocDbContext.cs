@@ -1,5 +1,8 @@
 ﻿using Hashcoop.Repository.Extensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using TravelDoc.Api.Domain.Planos.Entities;
+using TravelDoc.Api.Infrastructure.Persistence.Repositories.Planos;
 using TravelDoc.Application.Usuarios.Domain;
 using TravelDoc.Repository.Usuarios.Mappings;
 
@@ -10,17 +13,16 @@ namespace TravelDoc.Repository.Contexts
         public TravelDocDbContext(DbContextOptions<TravelDocDbContext> opts) : base(opts) { }
 
         public DbSet<Usuario> UsuarioTb { get; set; }
+        public DbSet<Plano> PlanoTb { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfiguration(new UsuarioTbMap());
+            modelBuilder.ApplyConfiguration(new PlanoTbMap());
+
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.ApplyConfiguration(new UsuarioTbMap());
-
             ConfigureConventions(modelBuilder);
-
-            // Se quiser aplicar todos os mapeamentos automaticamente:
-            // modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
         }
 
         protected static new Action<ModelBuilder> ConfigureConventions => modelBuilder =>

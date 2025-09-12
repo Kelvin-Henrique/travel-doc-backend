@@ -18,19 +18,22 @@ namespace TravelDoc.Application.Features.Usuarios.Inserir
             {
                 var result = await _mediator.Send(request);
 
-                return result.IsFailure ? Results.BadRequest() : Results.Ok();
+                return result.IsFailure ? Results.BadRequest(new 
+                { 
+                    Mensagem = result.Error
+                }) : Results.Ok();
             });
         }
     }
 
     public class InserirUsuarioRequestHandler : IRequestHandler<InserirUsuarioRequest, Result>
     {
-        //private readonly IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IUsuarioRepository _usuarioRepository;
 
-        public InserirUsuarioRequestHandler(IUsuarioRepository usuarioRepository)
+        public InserirUsuarioRequestHandler(IUsuarioRepository usuarioRepository, IUnitOfWork unitOfWork)
         {
-            //_unitOfWork = unitOfWork;
+            _unitOfWork = unitOfWork;
             _usuarioRepository = usuarioRepository;
         }
 
@@ -49,7 +52,7 @@ namespace TravelDoc.Application.Features.Usuarios.Inserir
 
             await _usuarioRepository.InserirAsync(usuario.Value);
 
-            //await _unitOfWork.CommitAsync();
+            await _unitOfWork.CommitAsync();
 
             return Result.Success();
         }

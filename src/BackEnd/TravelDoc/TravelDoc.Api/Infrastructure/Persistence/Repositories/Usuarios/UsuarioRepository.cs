@@ -18,7 +18,7 @@ namespace TravelDoc.Repository.Usuarios
         {
             await _context.UsuarioTb.AddAsync(usuario);
 
-            _context.Entry(usuario).Property("DataInclusao").CurrentValue = DateTime.Now;
+            _context.Entry(usuario).Property("DataInclusao").CurrentValue = DateTime.Now.ToUniversalTime();
         }
 
         public async ValueTask<bool> ExisteAsync(Usuario usuario)
