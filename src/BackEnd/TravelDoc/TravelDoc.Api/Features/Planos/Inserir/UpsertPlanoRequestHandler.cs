@@ -11,11 +11,11 @@ using TravelDoc.Infrastructure.Persistence.Context;
 
 namespace TravelDoc.Api.Features.Planos.Inserir
 {
-    public sealed class InserirPlanoEndpoint : IEndpoint
+    public sealed class UpsertPlanoEndpoint : IEndpoint
     {
         public void MapEndpoint(IEndpointRouteBuilder app)
         {
-            app.MapPost("planos", async (InserirPlanoRequest request, IMediator _mediator) =>
+            app.MapPost("planos", async (UpsertPlanoRequest request, IMediator _mediator) =>
             {
                 var result = await _mediator.Send(request);
 
@@ -27,18 +27,25 @@ namespace TravelDoc.Api.Features.Planos.Inserir
         }
     }
 
-    public class InserirPlanoRequestHandler : IRequestHandler<InserirPlanoRequest, Result>
+    public class UpsertPlanoRequestHandler : IRequestHandler<UpsertPlanoRequest, Result>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IPlanoRepository _planoRepository;
 
-        public InserirPlanoRequestHandler(IUnitOfWork unitOfWork, IPlanoRepository planoRepository)
+        public UpsertPlanoRequestHandler(IUnitOfWork unitOfWork, IPlanoRepository planoRepository)
         {
             _unitOfWork = unitOfWork;
             _planoRepository = planoRepository;
         }
 
-        public async Task<Result> Handle(InserirPlanoRequest request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(UpsertPlanoRequest request, CancellationToken cancellationToken)
+        {
+            return request.Id <= 0 ?
+                await Incluir(request) :
+                await Atualizar(request);
+        }
+
+        private async ValueTask<Result> Incluir(UpsertPlanoRequest request)
         {
             var obj = Plano.Criar(request.Nome, request.Descricao, request.Valor, request.Icone);
             if (obj.IsFailure)
@@ -52,19 +59,37 @@ namespace TravelDoc.Api.Features.Planos.Inserir
 
             return Result.Success();
         }
+
+        private async ValueTask<Result> Atualizar(UpsertPlanoRequest request)
+        { 
+            var obj = await _planoRepository.ObterAsync(request.Id);
+            if (obj is null)
+            {
+                return Result.Failure("Plano não encontrado!");
+            }
+
+            var atualizado = obj.Atualizar(request.Nome, request.Descricao, request.Valor, request.Icone);
+            if (atualizado.IsFailure)
+            {
+                return Result.Failure(atualizado.Error);
+            }
+
+            await _planoRepository.Atualizar(obj);
+        }
     }
 
-    public record InserirPlanoRequest : IRequest<Result>
+    public record UpsertPlanoRequest : IRequest<Result>
     {
+        public int Id { get; set; }
         public string Nome { get; set; }
         public string Descricao { get; set; }
         public decimal Valor { get; set; }
         public string Icone { get; set; }
     }
 
-    public class InserirPlanoRequestValidator : AbstractValidator<InserirPlanoRequest>
+    public class UpsertPlanoRequestValidator : AbstractValidator<UpsertPlanoRequest>
     {
-        public InserirPlanoRequestValidator()
+        public UpsertPlanoRequestValidator()
         {
             RuleFor(x => x.Nome)
                 .NotEmpty()
