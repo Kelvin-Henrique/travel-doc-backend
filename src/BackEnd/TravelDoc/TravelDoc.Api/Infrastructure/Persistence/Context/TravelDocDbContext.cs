@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TravelDoc.Api.Domain.Planos.Entities;
+using TravelDoc.Api.Domain.Viagens.Entities;
 using TravelDoc.Api.Infrastructure.Persistence.Repositories.Planos;
 using TravelDoc.Application.Usuarios.Domain;
 using TravelDoc.Repository.Usuarios.Mappings;
@@ -14,6 +15,7 @@ namespace TravelDoc.Repository.Contexts
 
         public DbSet<Usuario> UsuarioTb { get; set; }
         public DbSet<Plano> PlanoTb { get; set; }
+        public DbSet<Viagem> ViagemTb { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -1,14 +1,14 @@
 ﻿using TravelDoc.Api.Domain.Planos.Entities;
-using TravelDoc.Application.Usuarios.Domain;
+using TravelDoc.Api.Domain.Viagens.Entities;
 
-namespace TravelDoc.Api.Domain.Planos.Repositories
+namespace TravelDoc.Api.Domain.Viagens.Repositories
 {
-    public interface IPlanoRepository
+    public interface IViagemRepository
     {
         ValueTask<Plano> ObterAsync(int id);
-        ValueTask InserirAsync(Plano plano);
+        ValueTask InserirAsync(Viagem viagem);
         //ValueTask AtualizarAsync(Plano plano);
         ValueTask ExcluirAsync(int id);
         ValueTask<bool> ExisteAsync(int id);
-   }
+    }
 }

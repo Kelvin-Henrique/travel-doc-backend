@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TravelDoc.Api.Features.Usuarios.Login;
 using TravelDoc.Application.Domain.Usuarios.Repositories;
 using TravelDoc.Application.Usuarios.Domain;
 using TravelDoc.Repository.Contexts;
@@ -19,6 +20,26 @@ namespace TravelDoc.Repository.Usuarios
             await _context.UsuarioTb.AddAsync(usuario);
 
             _context.Entry(usuario).Property("DataInclusao").CurrentValue = DateTime.Now.ToUniversalTime();
+        }
+
+        public async ValueTask<UsuarioViewModel?> ObterAsync(string email)
+        {
+            return await _context.UsuarioTb
+                .Where(x => x.Email == email)
+                .Select(x => new UsuarioViewModel
+                {
+                    Cpf = x.Cpf,
+                    Email = x.Email,
+                    Nome = x.Nome,
+                    Telefone = x.Telefone,
+                    Tipo = (int)x.Tipo,
+                })
+                .FirstOrDefaultAsync();
+        }
+
+        public async ValueTask<bool> ExisteAsync(string emailOrTel)
+        {
+            return await _context.UsuarioTb.AnyAsync(x => x.Telefone == emailOrTel || x.Email == emailOrTel);
         }
 
         public async ValueTask<bool> ExisteAsync(Usuario usuario)

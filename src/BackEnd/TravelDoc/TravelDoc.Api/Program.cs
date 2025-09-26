@@ -2,14 +2,17 @@ using Microsoft.EntityFrameworkCore;
 using Scrutor;
 using System.Text.Json.Serialization;
 using TravelDoc.Api.Extensions;
-using TravelDoc.Application.Domain.Usuarios.Repositories;
 using TravelDoc.Application.Features.Usuarios.Inserir;
 using TravelDoc.Infrastructure.Core.Domain;
-using TravelDoc.Infrastructure.Core.Events.Messages;
 using TravelDoc.Infrastructure.Core.Events;
 using TravelDoc.Repository.Contexts;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+
 
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
@@ -38,7 +41,15 @@ builder.Services.AddMediatR((config) => {
     config.RegisterServicesFromAssembly(typeof(InserirUsuarioRequestHandler).Assembly);
 });
 
+builder.WebHost.UseUrls("http://0.0.0.0:5005;https://0.0.0.0:5005");
+
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 app.MapEndpoints();
 

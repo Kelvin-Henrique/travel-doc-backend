@@ -2,10 +2,7 @@
 using MediatR;
 using TravelDoc.Api.Domain.Planos.Entities;
 using TravelDoc.Api.Domain.Planos.Repositories;
-using TravelDoc.Api.Domain.Usuarios.Entities;
 using TravelDoc.Api.Extensions;
-using TravelDoc.Application.Domain.Usuarios.Repositories;
-using TravelDoc.Application.Usuarios.Domain;
 using TravelDoc.Infrastructure.Core.Results;
 using TravelDoc.Infrastructure.Persistence.Context;
 
@@ -68,13 +65,13 @@ namespace TravelDoc.Api.Features.Planos.Inserir
                 return Result.Failure("Plano não encontrado!");
             }
 
-            var atualizado = obj.Atualizar(request.Nome, request.Descricao, request.Valor, request.Icone);
+            var atualizado = obj.Atualizar(request.Nome, request.Descricao, request.Valor, request.Icone, true);
             if (atualizado.IsFailure)
             {
                 return Result.Failure(atualizado.Error);
             }
 
-            await _planoRepository.Atualizar(obj);
+           return Result.Success();
         }
     }
 
