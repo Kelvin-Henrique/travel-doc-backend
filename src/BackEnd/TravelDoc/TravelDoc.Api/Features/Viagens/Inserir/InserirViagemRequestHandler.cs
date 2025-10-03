@@ -40,7 +40,7 @@ namespace TravelDoc.Api.Features.Viagens.Inserir
 
         public async Task<Result> Handle(InserirViagemRequest request, CancellationToken cancellationToken)
         {
-            var usuario = Viagem.Criar(request.NomeViagem, request.Destino, request.DataInicio, request.DataFim, request.Descricao ?? "", request.UsuarioId, StatusViagemEnum.Planejada);
+            var usuario = Viagem.Criar(request.NomeViagem, request.Destino, request.DataInicio.Date.ToUniversalTime(), request.DataFim.Date.ToUniversalTime(), request.Descricao ?? "", request.UsuarioId, StatusViagemEnum.Planejada);
             if (usuario.IsFailure)
             {
                 return Result.Failure(usuario.Error);
@@ -53,7 +53,7 @@ namespace TravelDoc.Api.Features.Viagens.Inserir
             return Result.Success();
         }
     }
-
+    
     public record InserirViagemRequest : IRequest<Result>
     {
         public required int UsuarioId { get; set; }

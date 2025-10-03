@@ -1,4 +1,5 @@
-﻿using TravelDoc.Api.Domain.Usuarios.Entities;
+﻿using System.Drawing;
+using TravelDoc.Api.Domain.Usuarios.Entities;
 using TravelDoc.Infrastructure.Core.Domain;
 using TravelDoc.Infrastructure.Core.Results;
 
@@ -26,7 +27,7 @@ namespace TravelDoc.Application.Usuarios.Domain
         public string Cpf { get; }
         public string Nome { get; private set; }
         public string Email { get; private set; }
-        public string Telefone { get; }
+        public string Telefone { get; private set; }
         public TipoUsuarioEnum Tipo { get; }
         public bool AutenticacaoDoisFatores { get; private set; }
 
@@ -73,6 +74,47 @@ namespace TravelDoc.Application.Usuarios.Domain
             }
 
             return Result<Usuario>.Success(new Usuario(0, cpf, nome, email, telefone, tipo, false));
+        }
+
+        public Result Atualizar(string nome, string email, string telefone)
+        {
+            
+
+            if (string.IsNullOrEmpty(nome))
+            {
+                return Result.Failure("O nome deve ser informado!");
+            }
+
+            if (nome.Length > 500)
+            {
+                return Result.Failure("O nome deve ter no máximo 500 caracteres!");
+            }
+
+            if (string.IsNullOrEmpty(email))
+            {
+                return Result.Failure("O email deve ser informado!");
+            }
+
+            if (email.Length > 200)
+            {
+                return Result.Failure("O email deve ter no máximo 200 caracteres!");
+            }
+
+            if (string.IsNullOrEmpty(telefone))
+            {
+                return Result.Failure("O telefone deve ser informado!");
+            }
+
+            if (telefone.Length > 14)
+            {
+                return Result.Failure("O telefone deve ter no máximo 14 caracteres!");
+            }
+
+            Nome = nome;
+            Email = email;
+            Telefone = telefone;
+
+            return Result.Success();
         }
 
         public void HabilitarAutenticacaoDoisFatores()

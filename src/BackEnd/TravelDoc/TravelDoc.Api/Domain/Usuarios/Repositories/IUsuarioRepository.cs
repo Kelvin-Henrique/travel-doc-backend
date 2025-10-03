@@ -13,6 +13,6 @@ namespace TravelDoc.Application.Domain.Usuarios.Repositories
         ValueTask InserirAsync(Usuario usuario);
         ValueTask<bool> ExisteAsync(Usuario usuario);
         ValueTask<bool> ExisteAsync(string emailOrTel);
-        ValueTask<UsuarioViewModel?> ObterAsync(string email);
+        ValueTask<Usuario?> ObterAsync(string email);
     }
 }

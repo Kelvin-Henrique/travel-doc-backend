@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TravelDoc.Repository.Contexts;
@@ -11,9 +12,11 @@ using TravelDoc.Repository.Contexts;
 namespace TravelDoc.Api.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(TravelDocDbContext))]
-    partial class TravelDocDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251001215615_TravelDocv3")]
+    partial class TravelDocv3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -94,6 +97,10 @@ namespace TravelDoc.Api.Infrastructure.Persistence.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("data_fim");
 
+                    b.Property<DateTime>("DataInclusao")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("data_inclusao");
+
                     b.Property<DateTime>("DataInicio")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("data_inicio");
@@ -124,45 +131,6 @@ namespace TravelDoc.Api.Infrastructure.Persistence.Migrations
                     b.HasIndex("CriadorId");
 
                     b.ToTable("viagem_tb", (string)null);
-                });
-
-            modelBuilder.Entity("TravelDoc.Api.Domain.Viagens.Entities.ViagemParticipante", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime?>("DataAlteracao")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("data_alteracao");
-
-                    b.Property<DateTime?>("DataInclusao")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("data_inclusao");
-
-                    b.Property<int>("ParticipanteId")
-                        .HasColumnType("integer")
-                        .HasColumnName("participante_id");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("integer")
-                        .HasColumnName("status");
-
-                    b.Property<int>("ViagemId")
-                        .HasColumnType("integer")
-                        .HasColumnName("viagem_id");
-
-                    b.HasKey("Id")
-                        .HasName("pk_viagem_participante_tb");
-
-                    b.HasIndex("ParticipanteId");
-
-                    b.HasIndex("ViagemId");
-
-                    b.ToTable("viagem_participante_tb", (string)null);
                 });
 
             modelBuilder.Entity("TravelDoc.Application.Usuarios.Domain.Usuario", b =>
@@ -232,23 +200,6 @@ namespace TravelDoc.Api.Infrastructure.Persistence.Migrations
                         .HasConstraintName("fk_viagem_tb_usuario_tb");
 
                     b.Navigation("Criador");
-                });
-
-            modelBuilder.Entity("TravelDoc.Api.Domain.Viagens.Entities.ViagemParticipante", b =>
-                {
-                    b.HasOne("TravelDoc.Application.Usuarios.Domain.Usuario", null)
-                        .WithMany()
-                        .HasForeignKey("ParticipanteId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired()
-                        .HasConstraintName("fk_viagem_participante_tb_usuario_tb");
-
-                    b.HasOne("TravelDoc.Api.Domain.Viagens.Entities.Viagem", null)
-                        .WithMany()
-                        .HasForeignKey("ViagemId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired()
-                        .HasConstraintName("fk_viagem_participante_tb_viagem_tb");
                 });
 #pragma warning restore 612, 618
         }

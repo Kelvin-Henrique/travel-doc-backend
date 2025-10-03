@@ -7,6 +7,8 @@ using TravelDoc.Application.Domain.Usuarios.Repositories;
 using TravelDoc.Application.Usuarios.Domain;
 using TravelDoc.Api.Domain.Usuarios.Entities;
 using TravelDoc.Api.Infrastructure.Common.Extensions.Validators;
+using TravelDoc.Api.Domain.Planos.Entities;
+using TravelDoc.Api.Features.Planos.Inserir;
 
 namespace TravelDoc.Application.Features.Usuarios.Inserir
 {
@@ -23,6 +25,7 @@ namespace TravelDoc.Application.Features.Usuarios.Inserir
                     Mensagem = result.Error
                 }) : Results.Ok();
             });
+
         }
     }
 
@@ -38,6 +41,13 @@ namespace TravelDoc.Application.Features.Usuarios.Inserir
         }
 
         public async Task<Result> Handle(InserirUsuarioRequest request, CancellationToken cancellationToken)
+        {
+            return request.Id <= 0 ?
+                await Incluir(request) :
+                await Atualizar(request);
+        }
+
+        private async ValueTask<Result> Incluir(InserirUsuarioRequest request)
         {
             var usuario = Usuario.Criar(request.Cpf, request.Nome, request.Email, request.Telefone, request.Tipo);
             if (usuario.IsFailure)
@@ -56,14 +66,32 @@ namespace TravelDoc.Application.Features.Usuarios.Inserir
 
             return Result.Success();
         }
+
+        private async ValueTask<Result> Atualizar(InserirUsuarioRequest request)
+        {
+            var obj = await _usuarioRepository.ObterAsync(request.Email);
+            if (obj is null)
+            {
+                return Result.Failure("Plano não encontrado!");
+            }
+
+            var atualizado = obj.Atualizar(request.Nome, request.Email, request.Telefone);
+            if (atualizado.IsFailure)
+            {
+                return Result.Failure(atualizado.Error);
+            }
+
+            return Result.Success();
+        }
     }
 
     public record InserirUsuarioRequest : IRequest<Result>
     {
-        public string? Cpf { get; set; }
-        public string? Telefone { get; set; }
-        public string? Nome { get; set; }
-        public string? Email { get; set; }
+        public int? Id { get; set; }
+        public required string Cpf { get; set; }
+        public required string Telefone { get; set; }
+        public required string Nome { get; set; }
+        public required string Email { get; set; }
         public TipoUsuarioEnum Tipo { get; set; }
     }
 

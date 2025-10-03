@@ -42,9 +42,6 @@ namespace TravelDoc.Api.Infrastructure.Persistence.Repositories.Viagens
             builder.Property(i => i.Status)
                 .IsRequired();
 
-            builder.Property<DateTime>("DataInclusao")
-                .IsRequired();
-
             builder.Property<DateTime?>("DataAlteracao");
 
             builder.Ignore(x => x.Events);

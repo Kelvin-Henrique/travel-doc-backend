@@ -22,19 +22,9 @@ namespace TravelDoc.Repository.Usuarios
             _context.Entry(usuario).Property("DataInclusao").CurrentValue = DateTime.Now.ToUniversalTime();
         }
 
-        public async ValueTask<UsuarioViewModel?> ObterAsync(string email)
+        public async ValueTask<Usuario?> ObterAsync(string email)
         {
-            return await _context.UsuarioTb
-                .Where(x => x.Email == email)
-                .Select(x => new UsuarioViewModel
-                {
-                    Cpf = x.Cpf,
-                    Email = x.Email,
-                    Nome = x.Nome,
-                    Telefone = x.Telefone,
-                    Tipo = (int)x.Tipo,
-                })
-                .FirstOrDefaultAsync();
+            return await _context.UsuarioTb.FirstOrDefaultAsync(x => x.Email == email);
         }
 
         public async ValueTask<bool> ExisteAsync(string emailOrTel)

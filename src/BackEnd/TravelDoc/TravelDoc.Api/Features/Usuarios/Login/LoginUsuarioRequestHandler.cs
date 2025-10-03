@@ -34,14 +34,23 @@ namespace TravelDoc.Api.Features.Usuarios.Login
 
         public async Task<Result<UsuarioViewModel>> Handle(LoginUsuarioRequest request, CancellationToken cancellationToken)
         {
-            var usuario = await _usuarioRepository.ObterAsync(request.Email);
+            var email = "kelvin.santos@threeo.com.br";
+
+            var usuario = await _usuarioRepository.ObterAsync(email);
 
             if (usuario == null)
             {
                 return Result<UsuarioViewModel>.Failure("Cadastro não encontrado!");
             }
 
-            return Result<UsuarioViewModel>.Success(usuario);
+            return Result<UsuarioViewModel>.Success(new UsuarioViewModel
+            {
+                Id = usuario.Id,
+                Nome = usuario.Nome,
+                Email = usuario.Email,
+                Cpf = usuario.Cpf,
+                Telefone = usuario.Telefone,
+            });
         }
     }
 
