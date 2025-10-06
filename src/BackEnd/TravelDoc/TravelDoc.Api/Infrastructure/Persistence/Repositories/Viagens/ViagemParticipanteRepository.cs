@@ -53,5 +53,13 @@ namespace TravelDoc.Api.Infrastructure.Persistence.Repositories.Viagens
                 .Where(x => x.ParticipanteId == participanteId)
                 .ToListAsync();
         }
+
+        public async ValueTask<ViagemParticipante?> ObterPorViagemEParticipanteAsync(int viagemId, int participanteId)
+        {
+            return await _context.ViagemParticipanteTb
+                .AsNoTracking()
+                .Where(x => x.ViagemId == viagemId && x.ParticipanteId == participanteId)
+                .FirstOrDefaultAsync();
+        }
     }
 }
