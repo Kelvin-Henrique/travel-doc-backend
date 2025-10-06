@@ -1,4 +1,6 @@
-﻿namespace TravelDoc.Api.Features.Viagens.Obter
+﻿using TravelDoc.Application.Usuarios.Domain;
+
+namespace TravelDoc.Api.Features.Viagens.Obter
 {
     public class ViagemViewModel
     {
@@ -10,5 +12,6 @@
         public string? Descricao{ get; set; }
         public int? CriadorId { get; set; }
         public int? Status { get; set; }
+        public List<Usuario>? Participantes { get; set; }
     }
 }
