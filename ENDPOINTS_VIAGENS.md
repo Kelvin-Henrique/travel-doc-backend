@@ -156,7 +156,7 @@ Adiciona um participante/convidado à viagem.
 {
   "viagemId": 1,
   "emailConvidado": "convidado@email.com",
-  "status": 0
+  "status": 1
 }
 ```
 
@@ -208,9 +208,9 @@ DELETE /viagens/1/participantes/2?usuarioId=1
 
 ## Status de Participante (StatusViagemParticipanteEnum)
 
-- `0` - Pendente
-- `1` - Confirmado
-- `2` - Recusado
+- `1` - Pendente
+- `2` - Aceito
+- `3` - Recusado
 
 ## Dados de Teste
 
