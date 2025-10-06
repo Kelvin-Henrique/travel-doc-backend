@@ -19,7 +19,8 @@ Lista viagens futuras (data de início >= data atual) do usuário autenticado.
     "dataFim": "2024-12-25T00:00:00Z",
     "descricao": "Viagem de férias para conhecer Paris",
     "criadorId": 1,
-    "status": 1
+    "status": 1,
+    "participantes": []
   }
 ]
 ```
@@ -41,7 +42,8 @@ Lista viagens já realizadas (data de término < data atual) do usuário autenti
     "dataFim": "2024-01-20T00:00:00Z",
     "descricao": "Viagem de trabalho",
     "criadorId": 1,
-    "status": 3
+    "status": 3,
+    "participantes": []
   }
 ]
 ```
@@ -72,7 +74,8 @@ GET /viagens?usuarioId=1&destino=Paris
     "dataFim": "2024-12-25T00:00:00Z",
     "descricao": "Viagem de férias para conhecer Paris",
     "criadorId": 1,
-    "status": 1
+    "status": 1,
+    "participantes": []
   }
 ]
 ```
@@ -96,7 +99,14 @@ Retorna detalhes de uma viagem específica.
   "dataFim": "2024-12-25T00:00:00Z",
   "descricao": "Viagem de férias para conhecer Paris",
   "criadorId": 1,
-  "status": 1
+  "status": 1,
+  "participantes": [
+    {
+      "id": 2,
+      "nome": "Maria Silva",
+      "email": "maria@email.com"
+    }
+  ]
 }
 ```
 
@@ -107,12 +117,100 @@ Retorna detalhes de uma viagem específica.
 }
 ```
 
+### 5. PUT /viagens/{id}
+Atualiza informações de uma viagem existente.
+
+**Parâmetros de Rota:**
+- `id` (int, obrigatório): ID da viagem
+
+**Request Body:**
+```json
+{
+  "usuarioId": 1,
+  "nomeViagem": "Férias em Paris - Atualizado",
+  "destino": "Paris, França",
+  "dataInicio": "2024-12-15T00:00:00Z",
+  "dataFim": "2024-12-30T00:00:00Z",
+  "descricao": "Viagem de férias atualizada",
+  "status": 1
+}
+```
+
+**Resposta de Sucesso (200):**
+```json
+{}
+```
+
+**Resposta de Erro (400):**
+```json
+{
+  "mensagem": "Mensagem de erro descrevendo o problema"
+}
+```
+
+### 6. POST /viagens/participantes
+Adiciona um participante/convidado à viagem.
+
+**Request Body:**
+```json
+{
+  "viagemId": 1,
+  "emailConvidado": "convidado@email.com",
+  "status": 0
+}
+```
+
+**Resposta de Sucesso (200):**
+```json
+{}
+```
+
+**Resposta de Erro (400):**
+```json
+{
+  "mensagem": "Convidado não possui no cadastro no TravelDoc"
+}
+```
+
+### 7. DELETE /viagens/{viagemId}/participantes/{participanteId}
+Remove um participante da viagem.
+
+**Parâmetros de Rota:**
+- `viagemId` (int, obrigatório): ID da viagem
+- `participanteId` (int, obrigatório): ID do participante a ser removido
+
+**Parâmetros de Query:**
+- `usuarioId` (int, obrigatório): ID do usuário (criador da viagem)
+
+**Exemplo:**
+```
+DELETE /viagens/1/participantes/2?usuarioId=1
+```
+
+**Resposta de Sucesso (200):**
+```json
+{}
+```
+
+**Resposta de Erro (400):**
+```json
+{
+  "mensagem": "Participante não encontrado nesta viagem!"
+}
+```
+
 ## Status de Viagem (StatusViagemEnum)
 
 - `1` - Planejada
 - `2` - EmAndamento
 - `3` - Finalizada
 - `4` - Cancelada
+
+## Status de Participante (StatusViagemParticipanteEnum)
+
+- `0` - Pendente
+- `1` - Confirmado
+- `2` - Recusado
 
 ## Dados de Teste
 
@@ -157,7 +255,8 @@ Lista todas as viagens de um usuário (sem filtro por data).
     "dataFim": "2024-12-25T00:00:00Z",
     "descricao": "Viagem de férias para conhecer Paris",
     "criadorId": 1,
-    "status": 1
+    "status": 1,
+    "participantes": []
   },
   {
     "id": 2,
@@ -167,7 +266,8 @@ Lista todas as viagens de um usuário (sem filtro por data).
     "dataFim": "2024-01-20T00:00:00Z",
     "descricao": "Viagem de trabalho",
     "criadorId": 1,
-    "status": 3
+    "status": 3,
+    "participantes": []
   }
 ]
 ```

@@ -9,5 +9,8 @@ namespace TravelDoc.Api.Domain.Viagens.Repositories
         ValueTask InserirAsync(ViagemParticipante viagemParticiopante);
         ValueTask ExcluirAsync(int id);
         ValueTask<bool> ExisteAsync(int id);
+        ValueTask<IEnumerable<ViagemParticipante>> ObterPorViagemAsync(int viagemId);
+        ValueTask<IEnumerable<ViagemParticipante>> ObterPorParticipanteAsync(int participanteId);
+        ValueTask<ViagemParticipante?> ObterPorViagemEParticipanteAsync(int viagemId, int participanteId);
     }
 }

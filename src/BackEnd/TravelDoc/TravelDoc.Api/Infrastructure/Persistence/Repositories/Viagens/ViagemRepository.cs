@@ -47,7 +47,11 @@ namespace TravelDoc.Api.Infrastructure.Persistence.Repositories.Viagens
                     DataFim = x.DataFim.Date,
                     Descricao = x.Descricao,
                     CriadorId = x.CriadorId,
-                    Status = (int)x.Status
+                    Status = (int)x.Status,
+                    Participantes = _context.ViagemParticipanteTb
+                        .Where(vp => vp.ViagemId == x.Id)
+                        .Join(_context.UsuarioTb, vp => vp.ParticipanteId, u => u.Id, (vp, u) => u)
+                        .ToList()
                 })
                 .ToListAsync();
         }
@@ -72,7 +76,11 @@ namespace TravelDoc.Api.Infrastructure.Persistence.Repositories.Viagens
                     DataFim = x.DataFim.Date,
                     Descricao = x.Descricao,
                     CriadorId = x.CriadorId,
-                    Status = (int)x.Status
+                    Status = (int)x.Status,
+                    Participantes = _context.ViagemParticipanteTb
+                        .Where(vp => vp.ViagemId == x.Id)
+                        .Join(_context.UsuarioTb, vp => vp.ParticipanteId, u => u.Id, (vp, u) => u)
+                        .ToList()
                 })
                 .FirstOrDefaultAsync();
         }
@@ -93,7 +101,11 @@ namespace TravelDoc.Api.Infrastructure.Persistence.Repositories.Viagens
                     DataFim = x.DataFim.Date,
                     Descricao = x.Descricao,
                     CriadorId = x.CriadorId,
-                    Status = (int)x.Status
+                    Status = (int)x.Status,
+                    Participantes = _context.ViagemParticipanteTb
+                        .Where(vp => vp.ViagemId == x.Id)
+                        .Join(_context.UsuarioTb, vp => vp.ParticipanteId, u => u.Id, (vp, u) => u)
+                        .ToList()
                 })
                 .ToListAsync();
         }
@@ -114,7 +126,11 @@ namespace TravelDoc.Api.Infrastructure.Persistence.Repositories.Viagens
                     DataFim = x.DataFim.Date,
                     Descricao = x.Descricao,
                     CriadorId = x.CriadorId,
-                    Status = (int)x.Status
+                    Status = (int)x.Status,
+                    Participantes = _context.ViagemParticipanteTb
+                        .Where(vp => vp.ViagemId == x.Id)
+                        .Join(_context.UsuarioTb, vp => vp.ParticipanteId, u => u.Id, (vp, u) => u)
+                        .ToList()
                 })
                 .ToListAsync();
         }
@@ -156,7 +172,11 @@ namespace TravelDoc.Api.Infrastructure.Persistence.Repositories.Viagens
                     DataFim = x.DataFim.Date,
                     Descricao = x.Descricao,
                     CriadorId = x.CriadorId,
-                    Status = (int)x.Status
+                    Status = (int)x.Status,
+                    Participantes = _context.ViagemParticipanteTb
+                        .Where(vp => vp.ViagemId == x.Id)
+                        .Join(_context.UsuarioTb, vp => vp.ParticipanteId, u => u.Id, (vp, u) => u)
+                        .ToList()
                 })
                 .ToListAsync();
         }
