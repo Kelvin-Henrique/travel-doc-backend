@@ -11,5 +11,9 @@ namespace TravelDoc.Api.Domain.Viagens.Repositories
         ValueTask ExcluirAsync(int id);
         ValueTask<bool> ExisteAsync(int id);
         ValueTask<IEnumerable<ViagemViewModel>> ObterPorUsuarioAsync(int usuarioId);
+        ValueTask<ViagemViewModel?> ObterDetalhesAsync(int id, int usuarioId);
+        ValueTask<IEnumerable<ViagemViewModel>> ObterProximasAsync(int usuarioId);
+        ValueTask<IEnumerable<ViagemViewModel>> ObterHistoricoAsync(int usuarioId);
+        ValueTask<IEnumerable<ViagemViewModel>> BuscarAsync(int usuarioId, string? nome, string? destino, DateTime? dataInicio, DateTime? dataFim);
     }
 }

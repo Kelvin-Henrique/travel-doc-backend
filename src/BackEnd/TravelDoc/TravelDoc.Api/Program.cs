@@ -13,7 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Configuração do JSON
+// Configuraï¿½ï¿½o do JSON
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
     options.SerializerOptions.TypeInfoResolverChain.Insert(0, AppJsonSerializerContext.Default);
@@ -26,7 +26,7 @@ builder.Services.AddDbContext<TravelDocDbContext>(options =>
 // Endpoints
 builder.Services.AddEndpoints(typeof(InserirUsuarioEndpoint).Assembly);
 
-// Registro de serviços (excluindo Requests do MediatR)
+// Registro de serviï¿½os (excluindo Requests do MediatR)
 builder.Services.Scan(scan => scan
     .FromAssemblies(typeof(InserirUsuarioEndpoint).Assembly)
     .AddClasses(classes => classes
@@ -34,7 +34,7 @@ builder.Services.Scan(scan => scan
             // ignora classes que implementam IRequest<>
             !(type.GetInterfaces().Any(i =>
                 i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IRequest<>)))
-            // e ignora as entidades/eventos de domínio
+            // e ignora as entidades/eventos de domï¿½nio
             && type.GetInterfaces().Any(itf =>
                    itf != typeof(IAggregateRoot)
                 && type.BaseType != typeof(IntegrationEvent)
@@ -68,7 +68,7 @@ app.MapEndpoints();
 
 app.Run();
 
-// Serialização
+// Serializaï¿½ï¿½o
 [JsonSerializable(typeof(InserirUsuarioRequest))]
 internal partial class AppJsonSerializerContext : JsonSerializerContext
 {
