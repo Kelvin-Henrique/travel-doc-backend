@@ -116,7 +116,44 @@ Permite remover participantes/convidados de uma viagem:
 
 **Exemplo:** `DELETE /viagens/1/participantes/2?usuarioId=1`
 
-### 6. ⚠️ Funcionalidades de Carro Alugado e Bagagem
+### 6. ✅ Excluir Viagem (DELETE /viagens/{id})
+
+**Status:** ✅ Implementado
+
+Permite excluir uma viagem (exclusão física):
+- Verifica se a viagem existe
+- Verifica se o usuário é o criador da viagem (autorização)
+- Remove a viagem do banco de dados
+
+**Endpoint:** `DELETE /viagens/{id}?usuarioId={usuarioId}`
+
+**Exemplo:** `DELETE /viagens/1?usuarioId=1`
+
+### 7. ✅ Convidar Participante via Rota (POST /viagens/{tripId}/invite)
+
+**Status:** ✅ Implementado
+
+Endpoint alternativo para convidar participantes à viagem (tripId na rota):
+- Verifica se a viagem existe
+- Verifica se o usuário convidado está cadastrado no sistema
+- Cria convite com status Pendente
+- Mock de envio de notificação/email
+
+**Endpoint:** `POST /viagens/{tripId}/invite`
+
+**Exemplo de Request:**
+```json
+{
+  "email": "convidado@email.com"
+}
+```
+
+**Diferenças em relação ao POST /viagens/participantes:**
+- ID da viagem passado na rota ao invés do body
+- Campo `email` ao invés de `emailConvidado`
+- Não aceita status customizado (sempre Pendente)
+
+### 8. ⚠️ Funcionalidades de Carro Alugado e Bagagem
 
 **Status:** ⚠️ Não Implementado
 
@@ -173,9 +210,11 @@ Todas as operações de edição/exclusão verificam:
 ### Gerenciamento de Viagens
 - `POST /viagens` - Criar nova viagem
 - `PUT /viagens/{id}` - Atualizar viagem existente
+- `DELETE /viagens/{id}?usuarioId={id}` - Excluir viagem
 
 ### Gerenciamento de Participantes
 - `POST /viagens/participantes` - Adicionar participante
+- `POST /viagens/{tripId}/invite` - Convidar participante (alternativo)
 - `DELETE /viagens/{viagemId}/participantes/{participanteId}?usuarioId={id}` - Remover participante
 
 ## Documentação
