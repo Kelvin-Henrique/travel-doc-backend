@@ -172,7 +172,64 @@ Adiciona um participante/convidado à viagem.
 }
 ```
 
-### 7. DELETE /viagens/{viagemId}/participantes/{participanteId}
+### 7. DELETE /viagens/{id}
+Exclui uma viagem existente (exclusão física).
+
+**Parâmetros de Rota:**
+- `id` (int, obrigatório): ID da viagem
+
+**Parâmetros de Query:**
+- `usuarioId` (int, obrigatório): ID do usuário (criador da viagem)
+
+**Exemplo:**
+```
+DELETE /viagens/1?usuarioId=1
+```
+
+**Resposta de Sucesso (200):**
+```json
+{}
+```
+
+**Resposta de Erro (400):**
+```json
+{
+  "mensagem": "Viagem não encontrada!"
+}
+```
+
+### 8. POST /viagens/{tripId}/invite
+Convida um participante para a viagem através do email (endpoint alternativo).
+
+**Parâmetros de Rota:**
+- `tripId` (int, obrigatório): ID da viagem
+
+**Request Body:**
+```json
+{
+  "email": "convidado@email.com"
+}
+```
+
+**Resposta de Sucesso (200):**
+```json
+{}
+```
+
+**Resposta de Erro (400):**
+```json
+{
+  "mensagem": "Convidado não possui cadastro no TravelDoc"
+}
+```
+
+**Observações:**
+- Verifica se a viagem existe
+- Verifica se o usuário convidado está cadastrado no sistema
+- Cria um convite com status Pendente
+- Mock de envio de notificação/email (TODO: implementar serviço real)
+
+### 9. DELETE /viagens/{viagemId}/participantes/{participanteId}
 Remove um participante da viagem.
 
 **Parâmetros de Rota:**
